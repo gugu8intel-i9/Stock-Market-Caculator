@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Market Equations Calculator | Gugu8</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #34495e;
+            --success: #2ecc71;
+            --warning: #f39c12;
+            --gray: #95a5a6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a3a 0%, #0d1b28 100%);
+            color: var(--light);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 0;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .logo {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .logo-icon {
+            background: linear-gradient(45deg, var(--secondary), #1a5276);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(to right, var(--secondary), #1a5276);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+        
+        .subtitle {
+            color: var(--gray);
+            font-size: 1.2rem;
+            margin-top: 8px;
+        }
+        
+        .creator {
+            color: var(--warning);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .equation-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .calculator-card {
+            background: rgba(18, 30, 45, 0.85);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .calculator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+        }
+        
+        .card-header {
+            background: linear-gradient(90deg, var(--primary), var(--dark));
+            padding: 20px 25px;
+            border-bottom: 2px solid var(--secondary);
+        }
+        
+        .card-header h2 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.6rem;
+        }
+        
+        .card-header i {
+            color: var(--secondary);
+            font-size: 1.8rem;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .formula {
+            background: rgba(0, 20, 40, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-family: 'Cambria Math', 'Times New Roman', serif;
+            font-size: 1.3rem;
+            text-align: center;
+            border: 1px solid rgba(52, 152, 219, 0.3);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--secondary);
+        }
+        
+        .input-field {
+            width: 100%;
+            padding: 14px;
+            border-radius: 8px;
+            background: rgba(10, 20, 35, 0.8);
+            border: 1px solid rgba(52, 152, 219, 0.4);
+            color: white;
+            font-size: 1.1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .input-field:focus {
+            outline: none;
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+        
+        .calculate-btn {
+            background: linear-gradient(90deg, var(--secondary), #1a5276);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+        }
+        
+        .calculate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(52, 152, 219, 0.6);
+        }
+        
+        .calculate-btn:active {
+            transform: translateY(0);
+        }
+        
+        .result {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(10, 25, 40, 0.8);
+            border-radius: 10px;
+            text-align: center;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border-left: 4px solid var(--success);
+        }
+        
+        .result-value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--success);
+            margin: 5px 0;
+            font-family: 'Segoe UI', sans-serif;
+        }
+        
+        .result-label {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+        
+        .explanation {
+            background: rgba(26, 42, 66, 0.7);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+        
+        .explanation h2 {
+            color: var(--warning);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .explanation-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .concept-card {
+            background: rgba(18, 30, 45, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 3px solid var(--warning);
+        }
+        
+        .concept-card h3 {
+            color: var(--secondary);
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 25px;
+            margin-top: 30px;
+            color: var(--gray);
+            font-size: 1.1rem;
+            border-top: 1px solid rgba(52, 152, 219, 0.2);
+        }
+        
+        @media (max-width: 768px) {
+            .equation-container {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .logo {
+                flex-direction: column;
+            }
+        }
+        
+        .animation-container {
+            overflow: hidden;
+            position: relative;
+            height: 15px;
+            margin-top: 15px;
+        }
+        
+        .stock-ticker {
+            display: flex;
+            animation: scroll 25s linear infinite;
+            white-space: nowrap;
+            padding-left: 100%;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        .stock-item {
+            padding: 0 25px;
+            font-weight: 500;
+        }
+        
+        .positive { color: var(--success); }
+        .negative { color: var(--accent); }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div>
+                    <h1>Stock Market Equations Calculator</h1>
+                    <p class="subtitle">Financial metrics and valuation formulas at your fingertips</p>
+                    <p class="creator">Created by Gugu8</p>
+                </div>
+            </div>
+            
+            <div class="animation-container">
+                <div class="stock-ticker">
+                    <div class="stock-item">AAPL: $193.89 <span class="positive">+1.24%</span></div>
+                    <div class="stock-item">MSFT: $378.85 <span class="positive">+0.87%</span></div>
+                    <div class="stock-item">GOOGL: $142.36 <span class="positive">+1.53%</span></div>
+                    <div class="stock-item">TSLA: $248.42 <span class="negative">-0.76%</span></div>
+                    <div class="stock-item">AMZN: $178.12 <span class="positive">+0.92%</span></div>
+                    <div class="stock-item">META: $485.58 <span class="positive">+2.14%</span></div>
+                    <div class="stock-item">NVDA: $1,092.34 <span class="positive">+3.21%</span></div>
+                    <div class="stock-item">SPY: $525.68 <span class="positive">+0.45%</span></div>
+                </div>
+            </div>
+        </header>
+        
+        <main class="equation-container">
+            <!-- P/E Ratio Calculator -->
+            <div class="calculator-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-percentage"></i> P/E Ratio Calculator</h2>
+                </div>
+                <div class="card-body">
+                    <div class="formula">
+                        P/E Ratio = Price per Share ÷ Earnings per Share (EPS)
+                    </div>
+                    <div class="input-group">
+                        <label for="price">Current Stock Price ($)</label>
+                        <input type="number" id="price" class="input-field" placeholder="Enter stock price">
+                    </div>
+                    <div class="input-group">
+                        <label for="eps">Earnings Per Share (EPS)</label>
+                        <input type="number" id="eps" class="input-field" placeholder="Enter EPS">
+                    </div>
+                    <button class="calculate-btn" onclick="calculatePE()">
+                        <i class="fas fa-calculator"></i> Calculate P/E Ratio
+                    </button>
+                    <div class="result">
+                        <div class="result-label">P/E Ratio</div>
+                        <div class="result-value" id="pe-result">-</div>
+                        <div class="result-label">Industry Avg: 15-25</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Dividend Yield Calculator -->
+            <div class="calculator-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-money-bill-wave"></i> Dividend Yield Calculator</h2>
+                </div>
+                <div class="card-body">
+                    <div class="formula">
+                        Dividend Yield = (Annual Dividends per Share ÷ Price per Share) × 100%
+                    </div>
+                    <div class="input-group">
+                        <label for="dividend">Annual Dividends per Share ($)</label>
+                        <input type="number" id="dividend" class="input-field" placeholder="Enter annual dividends">
+                    </div>
+                    <div class="input-group">
+                        <label for="div-price">Current Stock Price ($)</label>
+                        <input type="number" id="div-price" class="input-field" placeholder="Enter stock price">
+                    </div>
+                    <button class="calculate-btn" onclick="calculateDividend()">
+                        <i class="fas fa-calculator"></i> Calculate Dividend Yield
+                    </button>
+                    <div class="result">
+                        <div class="result-label">Dividend Yield</div>
+                        <div class="result-value" id="dividend-result">-</div>
+                        <div class="result-label">S&P 500 Avg: ~1.5%</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- EPS Calculator -->
+            <div class="calculator-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-file-invoice-dollar"></i> EPS Calculator</h2>
+                </div>
+                <div class="card-body">
+                    <div class="formula">
+                        EPS = (Net Income - Preferred Dividends) ÷ Average Outstanding Shares
+                    </div>
+                    <div class="input-group">
+                        <label for="net-income">Net Income ($)</label>
+                        <input type="number" id="net-income" class="input-field" placeholder="Enter net income">
+                    </div>
+                    <div class="input-group">
+                        <label for="pref-div">Preferred Dividends ($)</label>
+                        <input type="number" id="pref-div" class="input-field" placeholder="Enter preferred dividends">
+                    </div>
+                    <div class="input-group">
+                        <label for="shares">Average Outstanding Shares</label>
+                        <input type="number" id="shares" class="input-field" placeholder="Enter number of shares">
+                    </div>
+                    <button class="calculate-btn" onclick="calculateEPS()">
+                        <i class="fas fa-calculator"></i> Calculate EPS
+                    </button>
+                    <div class="result">
+                        <div class="result-label">Earnings Per Share (EPS)</div>
+                        <div class="result-value" id="eps-result">-</div>
+                        <div class="result-label">Higher is better</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Book Value Calculator -->
+            <div class="calculator-card">
+                <div class="card-header">
+                    <h2><i class="fas fa-book"></i> Book Value Per Share Calculator</h2>
+                </div>
+                <div class="card-body">
+                    <div class="formula">
+                        Book Value Per Share = (Total Equity - Preferred Equity) ÷ Common Shares Outstanding
+                    </div>
+                    <div class="input-group">
+                        <label for="total-equity">Total Shareholders' Equity ($)</label>
+                        <input type="number" id="total-equity" class="input-field" placeholder="Enter total equity">
+                    </div>
+                    <div class="input-group">
+                        <label for="pref-equity">Preferred Equity ($)</label>
+                        <input type="number" id="pref-equity" class="input-field" placeholder="Enter preferred equity">
+                    </div>
+                    <div class="input-group">
+                        <label for="common-shares">Common Shares Outstanding</label>
+                        <input type="number" id="common-shares" class="input-field" placeholder="Enter common shares">
+                    </div>
+                    <button class="calculate-btn" onclick="calculateBookValue()">
+                        <i class="fas fa-calculator"></i> Calculate Book Value
+                    </button>
+                    <div class="result">
+                        <div class="result-label">Book Value Per Share</div>
+                        <div class="result-value" id="book-value-result">-</div>
+                        <div class="result-label">Compare to market price</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+        <section class="explanation">
+            <h2><i class="fas fa-graduation-cap"></i> Understanding Stock Market Metrics</h2>
+            <div class="explanation-content">
+                <div class="concept-card">
+                    <h3>P/E Ratio</h3>
+                    <p>Measures how much investors are willing to pay per dollar of earnings. A high P/E might indicate overvaluation or high growth expectations, while a low P/E could signal undervaluation or problems.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Dividend Yield</h3>
+                    <p>Shows the percentage return a company pays out to shareholders in dividends. High yields can indicate income stability but may also suggest limited growth opportunities.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Earnings Per Share (EPS)</h3>
+                    <p>Represents a company's profit allocated to each outstanding share. Growing EPS is generally positive, but should be analyzed alongside revenue growth and industry context.</p>
+                </div>
+                <div class="concept-card">
+                    <h3>Book Value Per Share</h3>
+                    <p>Indicates the net asset value per share. Comparing this to the market price gives the price-to-book ratio. Values below book value may indicate undervaluation.</p>
+                </div>
+            </div>
+        </section>
+        
+        <footer>
+            <p>Stock Market Equations Calculator &copy; 2025 | Created by Gugu8 | For educational purposes only</p>
+            <p style="margin-top: 8px; font-size: 0.95rem; color: var(--gray);">Disclaimer: Calculations are estimates. Not financial advice. Consult a professional before making investment decisions.</p>
+        </footer>
+    </div>
+
+    <script>
+        // P/E Ratio Calculator
+        function calculatePE() {
+            const price = parseFloat(document.getElementById('price').value);
+            const eps = parseFloat(document.getElementById('eps').value);
+            const resultElement = document.getElementById('pe-result');
+            
+            if (isNaN(price) || isNaN(eps) || eps === 0) {
+                resultElement.textContent = 'Invalid input';
+                resultElement.style.color = 'var(--accent)';
+                return;
+            }
+            
+            const peRatio = price / eps;
+            resultElement.textContent = peRatio.toFixed(2);
+            resultElement.style.color = 'var(--success)';
+            
+            // Add visual feedback
+            resultElement.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                resultElement.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // Dividend Yield Calculator
+        function calculateDividend() {
+            const dividend = parseFloat(document.getElementById('dividend').value);
+            const price = parseFloat(document.getElementById('div-price').value);
+            const resultElement = document.getElementById('dividend-result');
+            
+            if (isNaN(dividend) || isNaN(price) || price === 0) {
+                resultElement.textContent = 'Invalid input';
+                resultElement.style.color = 'var(--accent)';
+                return;
+            }
+            
+            const yieldPercent = (dividend / price) * 100;
+            resultElement.textContent = yieldPercent.toFixed(2) + '%';
+            resultElement.style.color = 'var(--success)';
+            
+            // Add visual feedback
+            resultElement.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                resultElement.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // EPS Calculator
+        function calculateEPS() {
+            const netIncome = parseFloat(document.getElementById('net-income').value);
+            const prefDiv = parseFloat(document.getElementById('pref-div').value);
+            const shares = parseFloat(document.getElementById('shares').value);
+            const resultElement = document.getElementById('eps-result');
+            
+            if (isNaN(netIncome) || isNaN(prefDiv) || isNaN(shares) || shares === 0) {
+                resultElement.textContent = 'Invalid input';
+                resultElement.style.color = 'var(--accent)';
+                return;
+            }
+            
+            const eps = (netIncome - prefDiv) / shares;
+            resultElement.textContent = '$' + eps.toFixed(2);
+            resultElement.style.color = 'var(--success)';
+            
+            // Add visual feedback
+            resultElement.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                resultElement.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // Book Value Per Share Calculator
+        function calculateBookValue() {
+            const totalEquity = parseFloat(document.getElementById('total-equity').value);
+            const prefEquity = parseFloat(document.getElementById('pref-equity').value);
+            const commonShares = parseFloat(document.getElementById('common-shares').value);
+            const resultElement = document.getElementById('book-value-result');
+            
+            if (isNaN(totalEquity) || isNaN(prefEquity) || isNaN(commonShares) || commonShares === 0) {
+                resultElement.textContent = 'Invalid input';
+                resultElement.style.color = 'var(--accent)';
+                return;
+            }
+            
+            const bookValue = (totalEquity - prefEquity) / commonShares;
+            resultElement.textContent = '$' + bookValue.toFixed(2);
+            resultElement.style.color = 'var(--success)';
+            
+            // Add visual feedback
+            resultElement.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                resultElement.style.transform = 'scale(1)';
+            }, 300);
+        }
+        
+        // Initialize with example values for first calculator
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('price').value = '150';
+            document.getElementById('eps').value = '10';
+            calculatePE();
+        });
+    </script>
+</body>
+</html>
+
