@@ -277,33 +277,6 @@
                 flex-direction: column;
             }
         }
-        
-        .animation-container {
-            overflow: hidden;
-            position: relative;
-            height: 15px;
-            margin-top: 15px;
-        }
-        
-        .stock-ticker {
-            display: flex;
-            animation: scroll 25s linear infinite;
-            white-space: nowrap;
-            padding-left: 100%;
-        }
-        
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-100%); }
-        }
-        
-        .stock-item {
-            padding: 0 25px;
-            font-weight: 500;
-        }
-        
-        .positive { color: var(--success); }
-        .negative { color: var(--accent); }
     </style>
 </head>
 <body>
@@ -317,19 +290,6 @@
                     <h1>Stock Market Equations Calculator</h1>
                     <p class="subtitle">Financial metrics and valuation formulas at your fingertips</p>
                     <p class="creator">Created by Gugu8</p>
-                </div>
-            </div>
-            
-            <div class="animation-container">
-                <div class="stock-ticker">
-                    <div class="stock-item">AAPL: $193.89 <span class="positive">+1.24%</span></div>
-                    <div class="stock-item">MSFT: $378.85 <span class="positive">+0.87%</span></div>
-                    <div class="stock-item">GOOGL: $142.36 <span class="positive">+1.53%</span></div>
-                    <div class="stock-item">TSLA: $248.42 <span class="negative">-0.76%</span></div>
-                    <div class="stock-item">AMZN: $178.12 <span class="positive">+0.92%</span></div>
-                    <div class="stock-item">META: $485.58 <span class="positive">+2.14%</span></div>
-                    <div class="stock-item">NVDA: $1,092.34 <span class="positive">+3.21%</span></div>
-                    <div class="stock-item">SPY: $525.68 <span class="positive">+0.45%</span></div>
                 </div>
             </div>
         </header>
